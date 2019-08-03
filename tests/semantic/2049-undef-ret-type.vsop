@@ -1,0 +1,6 @@
+class MyClass {
+    myMethod() : UndefType { (* likely a second error here *) self }
+}
+class Main {
+    main() : int32 { 0 }
+}
