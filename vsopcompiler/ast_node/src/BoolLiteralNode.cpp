@@ -45,5 +45,5 @@ void BoolLiteralNode::check(ASTProcessor *ast_processor) {
 }
 
 llvm::Value * BoolLiteralNode::codeGen(ASTProcessor *ast_processor) {
-    return llvm::ConstantInt::get(ast_processor->llvmContext, llvm::APInt(1, this->value));
+    return llvm::ConstantInt::get(ast_processor->llvmContext, llvm::APInt((this->value ? 1 : 0), this->value));
 }
