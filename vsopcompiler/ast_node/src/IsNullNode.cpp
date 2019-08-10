@@ -41,3 +41,16 @@ void IsNullNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *IsNullNode::codeGen(ASTProcessor *ast_processor)
+{
+    llvm::Value *value = this->expression->codeGen(ast_processor);
+
+    if (!value)
+    {
+        return nullptr;
+    }
+
+    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
+    return builder.CreateIsNull(value, "isnulltmp");
+}

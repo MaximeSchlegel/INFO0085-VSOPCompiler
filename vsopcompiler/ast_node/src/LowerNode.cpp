@@ -32,3 +32,17 @@ void LowerNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *LowerNode::codeGen(ASTProcessor *ast_processor)
+{
+    llvm::Value *leftValue = this->left->codeGen(ast_processor);
+    llvm::Value *rightValue = this->right->codeGen(ast_processor);
+
+    if (!leftValue || !rightValue)
+    {
+        return nullptr;
+    }
+
+    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
+    return builder.CreateICmpULT(leftValue, rightValue, "lowertmp");
+}

@@ -80,7 +80,7 @@ public:
 
     void preprocess(ASTProcessor *ast_processor) override;
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -106,7 +106,7 @@ public:
 
     void preprocess(ASTProcessor *ast_processor) override;
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -130,7 +130,7 @@ public:
 
     void preprocess(ASTProcessor *ast_processor) override;
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -152,7 +152,7 @@ public:
 
     void preprocess(ASTProcessor *ast_processor) override;
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -174,7 +174,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -194,7 +194,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -215,7 +215,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -234,7 +234,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -256,7 +256,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -275,7 +275,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -295,7 +295,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -313,7 +313,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -335,7 +335,6 @@ public:
     virtual void check(ASTProcessor * ast_processor) override;
     void checkBinOp(ASTProcessor  *ast_processor, std::string returnType);
     void checkBinOp(ASTProcessor  *ast_processor, std::string returnType, std::string testType);
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
 };
 
 
@@ -348,6 +347,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -360,7 +360,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -373,6 +373,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -385,7 +386,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -398,7 +399,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -411,7 +412,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -424,7 +425,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -437,7 +438,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -450,7 +451,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -469,7 +470,6 @@ public:
     void printUnOp(std::ostream &os, std::string str) const;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
 };
 
 
@@ -482,7 +482,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -495,7 +495,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -508,7 +508,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -530,7 +530,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -548,7 +548,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 class IntLiteralNode
@@ -565,7 +565,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 
@@ -583,7 +583,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 class UnitNode
@@ -597,7 +597,7 @@ public:
     virtual void print(std::ostream &os) const override;
 
     virtual void check(ASTProcessor *ast_processor) override;
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
 };
 
 

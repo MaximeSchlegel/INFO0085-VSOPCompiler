@@ -124,3 +124,19 @@ void IfNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
+{
+    llvm::Value *condValue = this->condition->codeGen(ast_processor);
+    llvm::Value *trueBranchValue = this->iftrue->codeGen(ast_processor);
+    llvm::Value *falseBranchValue = this->iffalse->codeGen(ast_processor);
+
+    if (!condValue || !trueBranchValue || !falseBranchValue)
+    {
+        return nullptr;
+    }
+
+    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
+    // Pas correct les 2 derniers parametres doivent être des blocks et non des values
+    return builder.CreateCondBr(condValue, trueBranchValue, falseBranchValue);
+}

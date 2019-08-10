@@ -143,3 +143,22 @@ void CallNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *CallNode::codeGen(ASTProcessor *ast_processor)
+{
+    llvm::Function *called = ast_processor->llvmModule->getFunction(*this->methodName);
+    if(!called) {
+        return nullptr;
+    }
+
+    std::vector<llvm::Value *> argsValues;
+
+    for (long unsigned int i = 0; i < this->arguments->size(); ++i) {
+        argsValues.push_back(this->arguments->at(i)->codeGen(ast_processor));
+        if(!argsValues.back()) {
+            return nullptr;
+        }
+    }
+    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
+    return builder.CreateCall(called, argsValues, "calltmp");
+}
