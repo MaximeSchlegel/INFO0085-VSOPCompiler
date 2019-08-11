@@ -38,6 +38,8 @@ void AndNode::check(ASTProcessor *ast_processor)
 
 llvm::Value *AndNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("AndNode::codeGen");
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -46,6 +48,6 @@ llvm::Value *AndNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateAnd(leftValue, rightValue, "andtmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateAnd(leftValue, rightValue, "andtmp");
 }

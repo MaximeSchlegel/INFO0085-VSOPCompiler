@@ -35,6 +35,8 @@ void EqualNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *EqualNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("EqualNode::codeGen");
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -43,6 +45,6 @@ llvm::Value *EqualNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateICmpEQ(leftValue, rightValue, "equaltmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateICmpEQ(leftValue, rightValue, "equaltmp");
 }

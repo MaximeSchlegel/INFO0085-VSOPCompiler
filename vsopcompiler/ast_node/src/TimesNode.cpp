@@ -34,6 +34,8 @@ void TimesNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *TimesNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("TimesNode::codeGen");
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -42,6 +44,6 @@ llvm::Value *TimesNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateFMul(leftValue, rightValue, "timestmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateFMul(leftValue, rightValue, "timestmp");
 }

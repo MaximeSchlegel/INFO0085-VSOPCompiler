@@ -13,6 +13,7 @@ ASTProcessor::ASTProcessor(ProgramNode *root) {
     this->declaredClasses = new std::map<std::string, Node*>();
     this->symbolTable = new SymbolTable();
 
+    this->llvmBuilder = new llvm::IRBuilder<>(this->llvmContext);
     this->llvmModule = llvm::make_unique<llvm::Module>("llvmModule", this->llvmContext);
 
     /// Add the native types to the extend table

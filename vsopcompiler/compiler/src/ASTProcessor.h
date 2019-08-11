@@ -34,7 +34,7 @@ public:
     SymbolTable *symbolTable;
 
     llvm::LLVMContext llvmContext;
-    llvm::IRBuilder<> llvmBuilder();
+    llvm::IRBuilder<> *llvmBuilder;
     std::unique_ptr<llvm::Module> llvmModule;
     std::map<std::string, llvm::Value *> llvmNamedValues;
 

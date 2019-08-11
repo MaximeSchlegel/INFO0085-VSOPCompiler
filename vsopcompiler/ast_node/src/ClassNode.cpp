@@ -200,3 +200,11 @@ void ClassNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *ClassNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("ClassNode::codeGen");
+
+    
+
+    debugger->printEnd();
+}

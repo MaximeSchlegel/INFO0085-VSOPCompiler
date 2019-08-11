@@ -39,7 +39,7 @@ IfNode::~IfNode() {
 }
 
 bool IfNode::doesSubTreeContains(std::string *id) {
-    debugger->printCall("IfNode::doesSubTreeContains");
+    debugger->printCall("IfNode::doesSubTreeContains : id=" + *id);
 
     if (condition->doesSubTreeContains(id)) {
         debugger->printEnd();
@@ -127,8 +127,23 @@ void IfNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("IfNode::codeGen");
+
+    /// Create the 3 block needed to represent the if clause
+    llvm::BasicBlock* condBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "cond");
+    llvm::BasicBlock* trueBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "trueBranch");
+    llvm::BasicBlock* falseBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "flaseBranch");
+
+    /// Set the insert point and generate the block for the conditon
+    ast_processor->llvmBuilder->SetInsertPoint(condBlock);
     llvm::Value *condValue = this->condition->codeGen(ast_processor);
+
+    /// Set the insert point and generate the block for the true branch
+    ast_processor->llvmBuilder->SetInsertPoint(trueBranchBlock);
     llvm::Value *trueBranchValue = this->iftrue->codeGen(ast_processor);
+
+    /// Set the insert point and generate the block for the false branch²
+    ast_processor->llvmBuilder->SetInsertPoint(falseBranchBlock);
     llvm::Value *falseBranchValue = this->iffalse->codeGen(ast_processor);
 
     if (!condValue || !trueBranchValue || !falseBranchValue)
@@ -136,7 +151,8 @@ llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
+    // llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
     // Pas correct les 2 derniers parametres doivent être des blocks et non des values
-    return builder.CreateCondBr(condValue, trueBranchValue, falseBranchValue);
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateCondBr(condBlock, trueBranchBlock, falseBranchBlock);
 }

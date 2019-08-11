@@ -35,6 +35,8 @@ void PowNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *PowNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("PowNode::codeGen");
+    
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -43,6 +45,6 @@ llvm::Value *PowNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateFAdd(leftValue, rightValue, "powtmp"); // TODO Find the proper function
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateFAdd(leftValue, rightValue, "powtmp"); // TODO Find the proper function
 }

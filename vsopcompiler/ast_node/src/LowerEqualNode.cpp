@@ -36,6 +36,8 @@ void LowerEqualNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *LowerEqualNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("LowerEqualNode::codeGen");
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -44,6 +46,6 @@ llvm::Value *LowerEqualNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateICmpULE(leftValue, rightValue, "lowerequaltmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateICmpULE(leftValue, rightValue, "lowerequaltmp");
 }

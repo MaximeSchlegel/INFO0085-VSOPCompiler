@@ -32,7 +32,7 @@ CallNode::~CallNode() {
 }
 
 bool CallNode::doesSubTreeContains(std::string *id) {
-    debugger->printCall("CallNode::doesSubTreeContains");
+    debugger->printCall("CallNode::doesSubTreeContains : id=" + *id);
 
     if (*this->methodName == *id) {
         debugger->printEnd();
@@ -146,6 +146,8 @@ void CallNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *CallNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("CallNode::codeGen");
+
     llvm::Function *called = ast_processor->llvmModule->getFunction(*this->methodName);
     if(!called) {
         return nullptr;
@@ -159,6 +161,7 @@ llvm::Value *CallNode::codeGen(ASTProcessor *ast_processor)
             return nullptr;
         }
     }
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateCall(called, argsValues, "calltmp");
+
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateCall(called, argsValues, "calltmp");
 }

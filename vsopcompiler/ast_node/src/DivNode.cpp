@@ -35,6 +35,8 @@ void DivNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *DivNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("DivNode::codeGen");
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -43,6 +45,6 @@ llvm::Value *DivNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateFDiv(leftValue, rightValue, "divtmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateFDiv(leftValue, rightValue, "divtmp");
 }

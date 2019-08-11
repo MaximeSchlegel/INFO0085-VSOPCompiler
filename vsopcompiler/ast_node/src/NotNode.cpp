@@ -44,6 +44,8 @@ void NotNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *NotNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("NotNode::codeGen");
+
     llvm::Value *value = this->expression->codeGen(ast_processor);
 
     if (!value)
@@ -51,6 +53,6 @@ llvm::Value *NotNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateNot(value, "nottmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateNot(value, "nottmp");
 }

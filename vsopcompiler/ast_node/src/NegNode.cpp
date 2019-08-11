@@ -44,6 +44,8 @@ void NegNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *NegNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->printCall("NegNode::codeGen");
+    
     llvm::Value *value = this->expression->codeGen(ast_processor);
 
     if (!value)
@@ -51,6 +53,6 @@ llvm::Value *NegNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateNeg(value, "negtmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateNeg(value, "negtmp");
 }

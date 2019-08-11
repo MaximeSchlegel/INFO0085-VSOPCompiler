@@ -55,3 +55,9 @@ void NewNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("NewNode::codeGen");
+
+    debugger->printEnd();
+}

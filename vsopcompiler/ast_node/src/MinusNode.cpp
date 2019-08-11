@@ -36,6 +36,7 @@ void MinusNode::check(ASTProcessor *ast_processor) {
 
 llvm::Value *MinusNode::codeGen(ASTProcessor *ast_processor)
 {
+    debugger->print("MinusNode::codeGen");
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -44,6 +45,6 @@ llvm::Value *MinusNode::codeGen(ASTProcessor *ast_processor)
         return nullptr;
     }
 
-    llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    return builder.CreateFSub(leftValue, rightValue, "minustmp");
+    debugger->printEnd();
+    return ast_processor->llvmBuilder->CreateFSub(leftValue, rightValue, "minustmp");
 }
