@@ -91,3 +91,17 @@ void AssignNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *AssignNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("WhileNode::codeGen");
+
+    llvm::Value *expressionValue = this->expression->codeGen(ast_processor);
+    if(!expressionValue) {
+        return nullptr;
+    }
+
+    ast_processor->llvmNamedValues[*this->objectName] = expressionsValue;
+
+    debugger->printEnd();
+    return expressionValue;
+}

@@ -85,3 +85,19 @@ void BlockNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *BlockNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("WhileNode::codeGen");
+
+    llvm::Value *expressionValue = nullptr;
+    for(std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end(); it++) {
+        expressionValue = (*it)->codeGen(ast_processor);
+
+        if(!expressionValue) {
+            return nullptr;
+        }
+    }
+
+    debugger->printEnd();
+    return expressionValue;
+}
