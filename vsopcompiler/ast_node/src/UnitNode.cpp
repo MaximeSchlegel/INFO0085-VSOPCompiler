@@ -45,5 +45,8 @@ void UnitNode::check(ASTProcessor *ast_processor) {
 }
 
 llvm::Value *UnitNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("ProgramNode::codeGen");
+    debugger->printEnd();
+
     return llvm::Constant::getNullValue(llvm::Type::getDoubleTy(ast_processor->llvmContext));
 }
