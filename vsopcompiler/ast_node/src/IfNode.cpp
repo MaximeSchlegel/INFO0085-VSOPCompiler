@@ -5,9 +5,9 @@
 #include "../../exception/Exception.h"
 #include "../../symbol_table/SymbolTable.h"
 
-
 IfNode::IfNode(Node *condition, Node *iftrue)
-        : Node() {
+    : Node()
+{
     debugger->printCall("IfNode::IfNode");
 
     this->condition = condition;
@@ -18,7 +18,8 @@ IfNode::IfNode(Node *condition, Node *iftrue)
 }
 
 IfNode::IfNode(Node *conditon, Node *iftrue, Node *iffalse)
-        : Node() {
+    : Node()
+{
     debugger->printCall("IfNode::IfNode");
 
     this->condition = conditon;
@@ -28,7 +29,8 @@ IfNode::IfNode(Node *conditon, Node *iftrue, Node *iffalse)
     debugger->printEnd();
 }
 
-IfNode::~IfNode() {
+IfNode::~IfNode()
+{
     debugger->printCall("IfNode::~IfNode");
 
     delete (this->condition);
@@ -38,18 +40,22 @@ IfNode::~IfNode() {
     debugger->printEnd();
 }
 
-bool IfNode::doesSubTreeContains(std::string *id) {
+bool IfNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("IfNode::doesSubTreeContains : id=" + *id);
 
-    if (condition->doesSubTreeContains(id)) {
+    if (condition->doesSubTreeContains(id))
+    {
         debugger->printEnd();
         return true;
     }
-    if (iftrue->doesSubTreeContains(id)) {
+    if (iftrue->doesSubTreeContains(id))
+    {
         debugger->printEnd();
         return true;
     }
-    if (iffalse && iffalse->doesSubTreeContains(id)) {
+    if (iffalse && iffalse->doesSubTreeContains(id))
+    {
         debugger->printEnd();
         return true;
     }
@@ -58,31 +64,43 @@ bool IfNode::doesSubTreeContains(std::string *id) {
     return false;
 }
 
-void IfNode::print(std::ostream &os) const {
+void IfNode::print(std::ostream &os) const
+{
     debugger->printCall("IfNode::print");
 
-    os << "If("; this->indent += 3;
+    os << "If(";
+    this->indent += 3;
     os << *this->condition << "," << std::endl;
 
-    for (int i = 0; i < this->indent; ++i) { os << " "; }
+    for (int i = 0; i < this->indent; ++i)
+    {
+        os << " ";
+    }
     os << *this->iftrue;
 
-    if (this->iffalse) {
+    if (this->iffalse)
+    {
         os << "," << std::endl;
 
-        for (int i = 0; i < this->indent; ++i) { os << " "; };
+        for (int i = 0; i < this->indent; ++i)
+        {
+            os << " ";
+        };
         os << *this->iffalse;
     }
-    os << ")"; this->indent -= 3;
+    os << ")";
+    this->indent -= 3;
 
-    if (this->getReturnType()) {
+    if (this->getReturnType())
+    {
         os << " : " << *this->getReturnType();
     }
 
     debugger->printEnd();
 }
 
-void IfNode::check(ASTProcessor *ast_processor) {
+void IfNode::check(ASTProcessor *ast_processor)
+{
     debugger->printCall("IfNode::check");
 
     /// Check the Subtree
@@ -92,7 +110,8 @@ void IfNode::check(ASTProcessor *ast_processor) {
     ast_processor->symbolTable->enterNewScope();
     this->iftrue->check(ast_processor);
     ast_processor->symbolTable->exitToParent();
-    if (iffalse) {
+    if (iffalse)
+    {
         ast_processor->symbolTable->enterNewScope();
         this->iffalse->check(ast_processor);
         ast_processor->symbolTable->exitToParent();
@@ -100,25 +119,35 @@ void IfNode::check(ASTProcessor *ast_processor) {
     debugger->printStep("Subtree check pass");
 
     /// Check that the first expr has type bool
-    if (*condition->getReturnType() != "bool") {
+    if (*condition->getReturnType() != "bool")
+    {
         throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "If conditon is expected of type bool -- " + *this->condition->getReturnType());
+                                    "If conditon is expected of type bool -- " + *this->condition->getReturnType());
     }
 
     /// Check that both then/else expr have the same type
-    if (iffalse) {
-        if (ast_processor->isChildOf(this->iftrue->getReturnType(), new std::string("Object"))
-                && ast_processor->isChildOf(this->iffalse->getReturnType(), new std::string("Object"))) {
+    if (iffalse)
+    {
+        if (ast_processor->isChildOf(this->iftrue->getReturnType(), new std::string("Object")) && ast_processor->isChildOf(this->iffalse->getReturnType(), new std::string("Object")))
+        {
             this->setReturnType(ast_processor->getFirstCommonAncestor(this->iftrue->getReturnType(), this->iffalse->getReturnType()));
-        } else if (*this->iftrue->getReturnType() == *this->iffalse->getReturnType()) {
-            this->setReturnType(this->iftrue->getReturnType());
-        } else if (*this->iftrue->getReturnType() == "unit" || *this->iffalse->getReturnType() == "unit") {
-            this->setReturnType(new std::string("unit"));
-        } else {
-            throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                    "Returned type of then and else do not match -- " + *this->iftrue->getReturnType() + " - " + *this->iffalse->getReturnType());
         }
-    } else {
+        else if (*this->iftrue->getReturnType() == *this->iffalse->getReturnType())
+        {
+            this->setReturnType(this->iftrue->getReturnType());
+        }
+        else if (*this->iftrue->getReturnType() == "unit" || *this->iffalse->getReturnType() == "unit")
+        {
+            this->setReturnType(new std::string("unit"));
+        }
+        else
+        {
+            throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                        "Returned type of then and else do not match -- " + *this->iftrue->getReturnType() + " - " + *this->iffalse->getReturnType());
+        }
+    }
+    else
+    {
         this->setReturnType(new std::string("unit"));
     }
 
@@ -129,30 +158,61 @@ llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
 {
     debugger->printCall("IfNode::codeGen");
 
-    /// Create the 3 block needed to represent the if clause
-    llvm::BasicBlock* condBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "cond");
-    llvm::BasicBlock* trueBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "trueBranch");
-    llvm::BasicBlock* falseBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "flaseBranch");
-
-    /// Set the insert point and generate the block for the conditon
-    ast_processor->llvmBuilder->SetInsertPoint(condBlock);
+    /// Evaluate the condition
     llvm::Value *condValue = this->condition->codeGen(ast_processor);
-
-    /// Set the insert point and generate the block for the true branch
-    ast_processor->llvmBuilder->SetInsertPoint(trueBranchBlock);
-    llvm::Value *trueBranchValue = this->iftrue->codeGen(ast_processor);
-
-    /// Set the insert point and generate the block for the false branch²
-    ast_processor->llvmBuilder->SetInsertPoint(falseBranchBlock);
-    llvm::Value *falseBranchValue = this->iffalse->codeGen(ast_processor);
-
-    if (!condValue || !trueBranchValue || !falseBranchValue)
+    if (!condValue)
     {
         return nullptr;
     }
 
-    // llvm::IRBuilder<> builder = ast_processor->llvmBuilder;
-    // Pas correct les 2 derniers parametres doivent être des blocks et non des values
+    /// Convert condition to a bool by comparing non-equal to 0.0
+    condValue = ast_processor->llvmBuilder->CreateFCmpONE(condValue, llvm::ConstantFP::get(ast_processor->llvmContext, llvm::APFloat(0.0)), "ifcond");
+
+    /// Create blocks for then and else branches. Insert then branch at the end of the function
+
+    llvm::Function *function = ast_processor->llvmbuilder->GetInsertBlock()->getParent();
+
+    llvm::BasicBlock *thenBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "thenBranch", function);
+    llvm::BasicBlock *elseBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "elseBranch");
+    llvm::BasicBlock *mergeBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "ifMerge");
+
+    ast_processor->llvmBuilder->CreateCondBr(condValue, thenBranchBlock, elseBranchBlock);
+
+    /// Emit then block
+    ast_processor->llvmBuilder->SetInsertPoint(thenBranchBlock);
+
+    llvm::Value *thenValue = this->iftrue->codeGen(ast_processor);
+    if (!thenValue)
+    {
+        return nullptr;
+    }
+
+    /// End of then branch. Go to end of if
+    ast_processor->llvmBuilder->CreateBr(mergeBlock);
+    thenBranchBlock = ast_processor->llvmBuilder->GetInsertBlock();
+
+    /// Emit else block
+    function->getBasicBlockList().push_back(elseBranchBlock);
+    ast_processor->llvmBuilder->SetInsertPoint(elseBranchBlock);
+
+    llvm::Value *elseValue = this->iffalse->codeGen(ast_processor);
+    if (!elseValue)
+    {
+        return nullptr;
+    }
+
+    /// End of else branch. Go to end of if
+    ast_processor->llvmBuilder->CreateBr(mergeBlock);
+    elseBranchBlock = ast_processor->llvmBuilder->GetInsertBlock();
+
+    /// Emit merge block
+    function->getBasicBlockList().push_back(mergeBlock);
+    ast_processor->llvmBuilder->SetInsertPoint(mergeBlock);
+    llvm::PHINode *PN = ast_processor->llvmBuilder->CreatePHI(llvm::Type::getDoubleTy(ast_processor->llvmContext), 2, "iftmp");
+
+    PN->addIncoming(thenValue, thenBranchBlock);
+    PN->addIncoming(elseValue, elseBranchBlock);
+
     debugger->printEnd();
-    return ast_processor->llvmBuilder->CreateCondBr(condBlock, trueBranchBlock, falseBranchBlock);
+    return PN;
 }

@@ -78,3 +78,53 @@ void WhileNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *WhileNode::codeGen(ASTProcessor *ast_processor)
+{
+    debugger->printCall("WhileNode::codeGen");
+
+    /// Create condition block
+    llvm::Function *function = ast_processor->llvmbuilder->GetInsertBlock()->getParent();
+
+    llvm::BasicBlock *condBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "condBlock", function);
+
+    /// Evaluate condition
+    ast_processor->llvmBuilder->SetInsertPoint(condBlock);
+
+    llvm::Value *condValue = this->condition->codeGen(ast_processor);
+    if (!condValue)
+    {
+        return nullptr;
+    }
+
+    /// Convert condition to a bool by comparing non-equal to 0.0
+    condValue = ast_processor->llvmBuilder->CreateFCmpONE(condValue, llvm::ConstantFP::get(ast_processor->llvmContext, llvm::APFloat(0.0)), "ifcond");
+
+    /// Create blocks for loop and end of loop
+    llvm::BasicBlock *loopBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "loopBlock");
+    llvm::BasicBlock *endWhileBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "endWhileBlock");
+
+    /// Conditional branch according to the condition
+    ast_processor->llvmBuilder->CreateCondBr(condValue, loopBlock, endWhileBlock);
+
+    /// Emit loop block
+    function->getBasicBlockList().push_back(loopBlock);
+    ast_processor->llvmBuilder->SetInsertPoint(loopBlock);
+
+    llvm::Value *loopValue = this->expression->codeGen(ast_processor);
+    if (!loopValue)
+    {
+        return nullptr;
+    }
+
+    /// End of loop. Go to condition
+    ast_processor->llvmBuilder->CreateBr(endWhileBlock);
+    loopBlock = ast_processor->llvmBuilder->GetInsertBlock();
+
+    /// Emit end block
+    function->getBasicBlockList().push_back(endWhileBlock);
+    ast_processor->llvmBuilder->SetInsertPoint(endWhileBlock);
+
+    debugger->printEnd();
+    return Constant::getNullValue(Type::getDoubleTy(TheContext));
+}
