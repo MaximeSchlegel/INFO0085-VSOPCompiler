@@ -84,7 +84,7 @@ llvm::Value *WhileNode::codeGen(ASTProcessor *ast_processor)
     debugger->printCall("WhileNode::codeGen");
 
     /// Create condition block
-    llvm::Function *function = ast_processor->llvmbuilder->GetInsertBlock()->getParent();
+    llvm::Function *function = ast_processor->llvmBuilder->GetInsertBlock()->getParent();
 
     llvm::BasicBlock *condBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "condBlock", function);
 
@@ -126,5 +126,5 @@ llvm::Value *WhileNode::codeGen(ASTProcessor *ast_processor)
     ast_processor->llvmBuilder->SetInsertPoint(endWhileBlock);
 
     debugger->printEnd();
-    return Constant::getNullValue(Type::getDoubleTy(TheContext));
+    return llvm::Constant::getNullValue(llvm::Type::getDoubleTy(ast_processor->llvmContext));
 }

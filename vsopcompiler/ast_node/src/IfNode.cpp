@@ -170,7 +170,7 @@ llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
 
     /// Create blocks for then and else branches. Insert then branch at the end of the function
 
-    llvm::Function *function = ast_processor->llvmbuilder->GetInsertBlock()->getParent();
+    llvm::Function *function = ast_processor->llvmBuilder->GetInsertBlock()->getParent();
 
     llvm::BasicBlock *thenBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "thenBranch", function);
     llvm::BasicBlock *elseBranchBlock = llvm::BasicBlock::Create(ast_processor->llvmContext, "elseBranch");
