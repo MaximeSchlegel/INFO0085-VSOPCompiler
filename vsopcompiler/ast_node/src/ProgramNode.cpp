@@ -142,16 +142,7 @@ void ProgramNode::check(ASTProcessor *ast_processor) {
 llvm::Value *ProgramNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ProgramNode::codeGen");
 
-    /// codeGen each class in the program
-    llvm::Value *expressionValue = nullptr;
-    for (std::vector <Node *>::iterator it = this->classes->begin(); it != this->classes->end(); it++) {
-        expressionValue = (*it)->check(ast_processor);
-
-        if(!expressionValue) {
-            return nullptr;
-        }
-    }
+    // TODO
 
     debugger->printEnd();
-    // TODO Return llvm::Value ?
 }
