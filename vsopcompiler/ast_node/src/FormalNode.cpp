@@ -73,3 +73,10 @@ void FormalNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *FormalNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("FormalNode::codeGen");
+
+    debugger->printEnd();
+    return nullptr;
+}

@@ -50,6 +50,7 @@ void StrLiteralNode::check(ASTProcessor *ast_processor) {
 }
 
 llvm::Value * StrLiteralNode::codeGen(ASTProcessor *ast_processor) {
-    // return llvm::SmallString<256>(*this->value);
+    debugger->printCall("StrLitteralNode::codeGen");
+    debugger->printEnd();
     return llvm::ConstantDataArray::getString(ast_processor->llvmContext, *this->value, false);
 }

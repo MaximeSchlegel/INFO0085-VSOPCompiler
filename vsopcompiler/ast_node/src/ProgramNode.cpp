@@ -145,4 +145,5 @@ llvm::Value *ProgramNode::codeGen(ASTProcessor *ast_processor) {
     // TODO
 
     debugger->printEnd();
+    return nullptr;
 }

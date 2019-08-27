@@ -205,3 +205,10 @@ void MethodNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *MethodNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("MethodNode::codeGen");
+
+    debugger->printEnd();
+    return nullptr;
+}

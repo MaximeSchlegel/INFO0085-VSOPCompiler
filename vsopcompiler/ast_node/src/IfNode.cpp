@@ -12,7 +12,7 @@ IfNode::IfNode(Node *condition, Node *iftrue)
 
     this->condition = condition;
     this->iftrue = iftrue;
-    this->iffalse = nullptr;
+    this->iffalse = new UnitNode();
 
     debugger->printEnd();
 }

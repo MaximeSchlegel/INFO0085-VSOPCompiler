@@ -142,3 +142,10 @@ void FieldNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *FieldNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("FieldNode::codeGen");
+
+    debugger->printEnd();
+    return nullptr;
+}

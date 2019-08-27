@@ -118,7 +118,7 @@ llvm::Value *WhileNode::codeGen(ASTProcessor *ast_processor)
     }
 
     /// End of loop. Go to condition
-    ast_processor->llvmBuilder->CreateBr(endWhileBlock);
+    ast_processor->llvmBuilder->CreateBr(condBlock);
     loopBlock = ast_processor->llvmBuilder->GetInsertBlock();
 
     /// Emit end block

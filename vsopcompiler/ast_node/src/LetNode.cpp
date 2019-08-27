@@ -123,3 +123,10 @@ void LetNode::check(ASTProcessor *ast_processor) {
 
     debugger->printEnd();
 }
+
+llvm::Value *LetNode::codeGen(ASTProcessor *ast_processor) {
+    debugger->printCall("LetNode::codeGen");
+
+    debugger->printEnd();
+    return nullptr;
+}

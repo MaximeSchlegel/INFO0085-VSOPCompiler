@@ -204,7 +204,6 @@ void ClassNode::check(ASTProcessor *ast_processor) {
 llvm::Value *ClassNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ClassNode::codeGen");
 
-    
-
     debugger->printEnd();
+    return nullptr;
 }
