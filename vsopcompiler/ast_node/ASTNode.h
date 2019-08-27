@@ -59,7 +59,7 @@ public:
 
     virtual void preprocess(ASTProcessor *ast_processor);
     virtual void check(ASTProcessor *ast_processor);
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) = 0;
 };
 
 
@@ -335,6 +335,7 @@ public:
     virtual void check(ASTProcessor * ast_processor) override;
     void checkBinOp(ASTProcessor  *ast_processor, std::string returnType);
     void checkBinOp(ASTProcessor  *ast_processor, std::string returnType, std::string testType);
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) = 0;
 };
 
 
@@ -470,6 +471,7 @@ public:
     void printUnOp(std::ostream &os, std::string str) const;
 
     virtual void check(ASTProcessor *ast_processor) override;
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) = 0;
 };
 
 
