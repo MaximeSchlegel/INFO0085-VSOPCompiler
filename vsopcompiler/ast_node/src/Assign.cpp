@@ -100,7 +100,7 @@ llvm::Value *AssignNode::codeGen(ASTProcessor *ast_processor) {
         return nullptr;
     }
 
-    ast_processor->llvmNamedValues[*this->objectName] = expressionsValue;
+    ast_processor->llvmNamedValues[*this->objectName] = expressionValue;
 
     debugger->printEnd();
     return expressionValue;
