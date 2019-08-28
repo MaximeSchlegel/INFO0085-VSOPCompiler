@@ -35,30 +35,30 @@ install-tools:
 	mkdir -p $(BUILD_DIR)/debugger
 
 $(BUILD_DIR)/exception/%.o: $(EXCEPT_DIR)/src/%.cpp
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $@ $<
+	$(CC) $(CPP_FLAG) -c -o $@ $< $(LLVM_FLAGS)
 
 $(BUILD_DIR)/debugger/%.o: $(DEBUG_DIR)/src/%.cpp
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $@ $<
+	$(CC) $(CPP_FLAG) -c -o $@ $< $(LLVM_FLAGS)
 
 $(BUILD_DIR)/ast_node/%.o: $(ASTNODE_DIR)/src/%.cpp
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $@ $<
+	$(CC) $(CPP_FLAG) -c -o $@ $< $(LLVM_FLAGS)
 
 $(BUILD_DIR)/symbol_table/%.o: $(SYMBTAB_DIR)/src/%.cpp
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $@ $<
+	$(CC) $(CPP_FLAG) -c -o $@ $< $(LLVM_FLAGS)
 
 $(BUILD_DIR)/parser.o compiler/src/Parser.h: compiler/vsop_parser.y ast_node/ASTNode.h
 	bison -d --locations -o compiler/src/Parser.c compiler/vsop_parser.y
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $(BUILD_DIR)/parser.o compiler/src/Parser.c
+	$(CC) $(CPP_FLAG) -c -o $(BUILD_DIR)/parser.o compiler/src/Parser.c $(LLVM_FLAGS)
 
 $(BUILD_DIR)/lexer.o compiler/src/Lexer.h: compiler/src/Parser.h compiler/vsop_lexer.l
 	flex --header-file=compiler/src/Lexer.h -o compiler/src/Lexer.c compiler/vsop_lexer.l
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $(BUILD_DIR)/lexer.o compiler/src/Lexer.c
+	$(CC) $(CPP_FLAG) -c -o $(BUILD_DIR)/lexer.o compiler/src/Lexer.c $(LLVM_FLAGS)
 
 $(BUILD_DIR)/ASTProcessor.o: compiler/src/ASTProcessor.cpp
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) -c -o $(BUILD_DIR)/ASTProcessor.o compiler/src/ASTProcessor.cpp
+	$(CC) $(CPP_FLAG) -c -o $(BUILD_DIR)/ASTProcessor.o compiler/src/ASTProcessor.cpp $(LLVM_FLAGS)
 
 $(EXEC): compiler/src/main.cpp $(BUILD_DIR)/lexer.o $(BUILD_DIR)/parser.o $(BUILD_DIR)/ASTProcessor.o $(EXCEPT_OBJ) $(DEBUG_OBJ) $(ASTNODE_OBJ) $(SYMBTAB_OBJ)
-	$(CC) $(CPP_FLAG) $(LLVM_FLAGS) $^ -o $@
+	$(CC) $(CPP_FLAG) $^ -o $@ $(LLVM_FLAGS)
 
 
 clean:
