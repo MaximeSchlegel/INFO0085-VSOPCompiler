@@ -49,8 +49,6 @@ void StrLiteralNode::check(ASTProcessor *ast_processor)
     debugger->printEnd();
 }
 
-llvm::Value *StrLiteralNode::codeGen(ASTProcessor *ast_processor)
-{
 
 llvm::Value * StrLiteralNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("StrLitteralNode::codeGen");

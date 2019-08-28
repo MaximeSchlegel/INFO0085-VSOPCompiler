@@ -162,9 +162,6 @@ void ProgramNode::check(ASTProcessor *ast_processor)
     debugger->printEnd();
 }
 
-llvm::Value *ProgramNode::codeGen(ASTProcessor *ast_processor)
-{
-
 llvm::Value *ProgramNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ProgramNode::codeGen");
 

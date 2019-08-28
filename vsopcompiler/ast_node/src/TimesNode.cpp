@@ -21,9 +21,6 @@ void TimesNode::print(std::ostream &os) const
     debugger->printEnd();
 }
 
-void TimesNode::check(ASTProcessor *ast_processor)
-{
-
 void TimesNode::check(ASTProcessor *ast_processor) {
     debugger->printCall("TimesNode::check");
 

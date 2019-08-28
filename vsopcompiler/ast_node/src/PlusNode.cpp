@@ -22,9 +22,6 @@ void PlusNode::print(std::ostream &os) const
     debugger->printEnd();
 }
 
-void PlusNode::check(ASTProcessor *ast_processor)
-{
-
 void PlusNode::check(ASTProcessor *ast_processor) {
     debugger->print("PlusNode::check");
 

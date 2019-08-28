@@ -57,9 +57,6 @@ void UnOpNode::printUnOp(std::ostream &os, std::string str) const
     debugger->printEnd();
 }
 
-void UnOpNode::check(ASTProcessor *ast_processor)
-{
-
 void UnOpNode::check(ASTProcessor *ast_processor) {
     debugger->printCall("UnOpNode::check");
 

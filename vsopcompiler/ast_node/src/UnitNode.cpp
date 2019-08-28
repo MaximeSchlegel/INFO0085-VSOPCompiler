@@ -43,9 +43,6 @@ void UnitNode::check(ASTProcessor *ast_processor)
     debugger->printEnd();
 }
 
-llvm::Value *UnitNode::codeGen(ASTProcessor *ast_processor)
-{
-
 llvm::Value *UnitNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ProgramNode::codeGen");
     debugger->printEnd();
