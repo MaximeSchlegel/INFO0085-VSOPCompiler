@@ -82,26 +82,6 @@ void displayToken (int token) {
 
 
 int main(int argc, char *argv[]) {
-//    //define the basic reserved identifier
-//    reservedId.emplace("bool", BOOL);
-//    reservedId.emplace("int32", INT32);
-//    reservedId.emplace("string", STRING);
-//    reservedId.emplace("unit", UNIT);
-//    reservedId.emplace("and", AND);
-//    reservedId.emplace("not", NOT);
-//    reservedId.emplace("class", CLASS);
-//    reservedId.emplace("do", DO);
-//    reservedId.emplace("else", ELSE);
-//    reservedId.emplace("extends", EXTENDS);
-//    reservedId.emplace("false", FALSE);
-//    reservedId.emplace("if", IF);
-//    reservedId.emplace("in", IN);
-//    reservedId.emplace("isnull", ISNULL);
-//    reservedId.emplace("let", LET);
-//    reservedId.emplace("new", NEW);
-//    reservedId.emplace("then", THEN);
-//    reservedId.emplace("true", TRUE);
-//    reservedId.emplace("while", WHILE);
 
     bool lex = false, parse = false, check = false, llvm = false, debug = false;
     std::string optionStr;
