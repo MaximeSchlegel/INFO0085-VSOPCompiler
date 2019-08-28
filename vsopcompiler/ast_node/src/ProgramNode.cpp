@@ -1,4 +1,5 @@
 #include "../headers/ProgramNode.h"
+#include "../headers/ClassNode.h"
 
 ProgramNode::ProgramNode()
     : Node()
