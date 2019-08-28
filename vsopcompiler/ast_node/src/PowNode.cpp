@@ -36,8 +36,6 @@ llvm::Value *PowNode::codeGen(ASTProcessor *ast_processor)
     debugger->printCall("PowNode::codeGen");
 
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
-
-    llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
     if (!leftValue || !rightValue)
