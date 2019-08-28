@@ -1,9 +1,4 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
+#include "../headers/ClassNode.h"
 
 ClassNode::ClassNode(std::string *name, std::string *extends,
                      std::pair<std::vector < Node * > *, std::vector<Node *> *> *fieldsAndMethods)

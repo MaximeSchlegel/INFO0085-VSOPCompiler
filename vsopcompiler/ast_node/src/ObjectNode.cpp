@@ -1,12 +1,7 @@
-#include "../ASTNode.h"
+#include "../headers/ObjectNode.h"
 
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
-
-ObjectNode::ObjectNode(std::string *name) {
+ObjectNode::ObjectNode(std::string *name)
+{
     debugger->printCall("ObjectNode::ObjectNode : name=" + *name);
 
     this->name = name;
@@ -15,7 +10,8 @@ ObjectNode::ObjectNode(std::string *name) {
     debugger->printEnd();
 }
 
-ObjectNode::ObjectNode(std::string *name, std::string *type) {
+ObjectNode::ObjectNode(std::string *name, std::string *type)
+{
     debugger->printCall("ObjectNode::ObjectNode : name=" + *name + ", type=" + *type);
 
     this->name = name;
@@ -24,7 +20,8 @@ ObjectNode::ObjectNode(std::string *name, std::string *type) {
     debugger->printEnd();
 }
 
-ObjectNode::~ObjectNode() {
+ObjectNode::~ObjectNode()
+{
     debugger->printCall("ObjectNode::~ObjectNode");
 
     delete (this->name);
@@ -33,20 +30,24 @@ ObjectNode::~ObjectNode() {
     debugger->printEnd();
 }
 
-void ObjectNode::setType(std::string *type) {
+void ObjectNode::setType(std::string *type)
+{
     this->type = type;
 
     debugger->printEnd();
 }
 
-bool ObjectNode::doesSubTreeContains(std::string *id) {
+bool ObjectNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("ObjectNode::doesSubTreeContains");
 
-    if (*this->name == *id) {
+    if (*this->name == *id)
+    {
         debugger->printEnd();
         return true;
     }
-    if (this->type && *this->type == *id) {
+    if (this->type && *this->type == *id)
+    {
         debugger->printEnd();
         return true;
     }
@@ -55,31 +56,38 @@ bool ObjectNode::doesSubTreeContains(std::string *id) {
     return false;
 }
 
-void ObjectNode::print(std::ostream &os) const {
+void ObjectNode::print(std::ostream &os) const
+{
     debugger->printCall("ObjectNode::print");
 
     os << *this->name;
-    if (this->getReturnType()) {
+    if (this->getReturnType())
+    {
         os << " : " << *this->getReturnType();
     }
 
     debugger->printEnd();
 }
 
-void ObjectNode::check(ASTProcessor *ast_processor) {
+void ObjectNode::check(ASTProcessor *ast_processor)
+{
     debugger->printCall("ObjectNode::check");
 
     /// Check that the object is declare in the scope
     VariableEntry *object = ast_processor->symbolTable->lookupVariable(this->name);
-    if (!object) {
+    if (!object)
+    {
         throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Object is not define in scope -- " + *this->name);
+                                    "Object is not define in scope -- " + *this->name);
     }
 
     this->setReturnType(object->getType());
 
     debugger->printEnd();
 }
+
+llvm::Value *ObjectNode::codeGen(ASTProcessor *ast_processor)
+{
 
 llvm::Value *ObjectNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ObjectNode::codeGen");

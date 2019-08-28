@@ -1,9 +1,4 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
+#include "../headers/MinusNode.h"
 
 
 MinusNode::MinusNode(Node *left, Node *right)

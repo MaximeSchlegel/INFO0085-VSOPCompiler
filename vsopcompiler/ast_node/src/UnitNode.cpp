@@ -1,48 +1,50 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/UnitNode.h"
 
 UnitNode::UnitNode()
-        :Node() {
+    : Node()
+{
     debugger->printCall("UnitNode::UnitNode");
     debugger->printEnd();
-
 }
 
-UnitNode::~UnitNode() {
+UnitNode::~UnitNode()
+{
     debugger->printCall("UnitNode::~UnitNode");
     debugger->printEnd();
 }
 
-bool UnitNode::doesSubTreeContains(std::string *id) {
+bool UnitNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("UnitNode::doesSubTreeContains");
 
     debugger->printEnd();
     return false;
 }
 
-void UnitNode::print(std::ostream &os) const {
+void UnitNode::print(std::ostream &os) const
+{
     debugger->printCall("UnitNode::print");
 
     os << "()";
-    if(this->getReturnType()) {
+    if (this->getReturnType())
+    {
         std::cout << " : unit";
     }
 
     debugger->printEnd();
 }
 
-void UnitNode::check(ASTProcessor *ast_processor) {
+void UnitNode::check(ASTProcessor *ast_processor)
+{
     debugger->printCall("UnitNode::check");
 
     this->setReturnType(new std::string("unit"));
 
     debugger->printEnd();
 }
+
+llvm::Value *UnitNode::codeGen(ASTProcessor *ast_processor)
+{
 
 llvm::Value *UnitNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ProgramNode::codeGen");

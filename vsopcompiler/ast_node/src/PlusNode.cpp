@@ -1,29 +1,29 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/PlusNode.h"
 
 PlusNode::PlusNode(Node *left, Node *right)
-        : BinOpNode(left, right) {
+    : BinOpNode(left, right)
+{
     debugger->print("PlusNode::PlusNode");
     debugger->printEnd();
 }
 
-PlusNode::~PlusNode() {
+PlusNode::~PlusNode()
+{
     debugger->print("lusNode::~PlusNode");
     debugger->printEnd();
 }
 
-void PlusNode::print(std::ostream &os) const {
+void PlusNode::print(std::ostream &os) const
+{
     debugger->print("PlusNode::print");
 
     this->printBinOp(os, "+");
 
     debugger->printEnd();
 }
+
+void PlusNode::check(ASTProcessor *ast_processor)
+{
 
 void PlusNode::check(ASTProcessor *ast_processor) {
     debugger->print("PlusNode::check");

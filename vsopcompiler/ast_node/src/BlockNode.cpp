@@ -1,13 +1,8 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/BlockNode.h"
 
 BlockNode::BlockNode()
-        : Node() {
+    : Node()
+{
     debugger->printCall("BlockNode::BlockNode");
 
     this->expressions = new std::vector<Node *>();
@@ -15,7 +10,8 @@ BlockNode::BlockNode()
     debugger->printEnd();
 }
 
-BlockNode::~BlockNode() {
+BlockNode::~BlockNode()
+{
     debugger->printCall("BlockNode::~BlockNode");
 
     delete (this->expressions);
@@ -23,15 +19,19 @@ BlockNode::~BlockNode() {
     debugger->printEnd();
 }
 
-void BlockNode::addExpr(Node *expr) {
+void BlockNode::addExpr(Node *expr)
+{
     this->expressions->push_back(expr);
 }
 
-bool BlockNode::doesSubTreeContains(std::string *id) {
+bool BlockNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("BlockNode::doesSubTreeContains");
 
-    for (std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end() ; it++) {
-        if ((*it)->doesSubTreeContains(id)) {
+    for (std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end(); it++)
+    {
+        if ((*it)->doesSubTreeContains(id))
+        {
             debugger->printEnd();
             return true;
         }
@@ -41,42 +41,55 @@ bool BlockNode::doesSubTreeContains(std::string *id) {
     return false;
 }
 
-void BlockNode::print(std::ostream &os) const {
+void BlockNode::print(std::ostream &os) const
+{
     debugger->printCall("BlockNode::print");
 
-    if (this->expressions->size() == 1) {
+    if (this->expressions->size() == 1)
+    {
         os << *this->expressions->front();
         return;
     }
-    if (this->expressions->size() > 1) {
-        os << "["; this->indent++;
+    if (this->expressions->size() > 1)
+    {
+        os << "[";
+        this->indent++;
 
         os << *this->expressions->front();
 
-        std::vector<Node *>::iterator it = this->expressions->begin(); it++;
-        for (; it != this->expressions->end(); it++) {
+        std::vector<Node *>::iterator it = this->expressions->begin();
+        it++;
+        for (; it != this->expressions->end(); it++)
+        {
             os << "," << std::endl;
-            for (int i = 0; i < this->indent; ++i) { os << " "; }
+            for (int i = 0; i < this->indent; ++i)
+            {
+                os << " ";
+            }
             os << **it;
         }
 
-        os << "]"; this->indent--;
+        os << "]";
+        this->indent--;
     }
 
-    if (this->getReturnType()) {
+    if (this->getReturnType())
+    {
         os << " : " << *this->getReturnType();
     }
 
     debugger->printEnd();
 }
 
-void BlockNode::check(ASTProcessor *ast_processor) {
+void BlockNode::check(ASTProcessor *ast_processor)
+{
     debugger->printCall("BlockNode::check");
 
     ast_processor->symbolTable->enterNewScope();
 
     /// Check the subtree
-    for (std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end() ; it++) {
+    for (std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end(); it++)
+    {
         (*it)->check(ast_processor);
     }
 
@@ -86,14 +99,17 @@ void BlockNode::check(ASTProcessor *ast_processor) {
     debugger->printEnd();
 }
 
-llvm::Value *BlockNode::codeGen(ASTProcessor *ast_processor) {
+llvm::Value *BlockNode::codeGen(ASTProcessor *ast_processor)
+{
     debugger->printCall("BlockNode::codeGen");
 
     llvm::Value *expressionValue = nullptr;
-    for(std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end(); it++) {
+    for (std::vector<Node *>::iterator it = this->expressions->begin(); it != this->expressions->end(); it++)
+    {
         expressionValue = (*it)->codeGen(ast_processor);
 
-        if(!expressionValue) {
+        if (!expressionValue)
+        {
             return nullptr;
         }
     }

@@ -1,9 +1,4 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
+#include "../headers/CallNode.h"
 
 
 CallNode::CallNode(std::string *methodName, Node *caller, std::vector<Node *> *args)

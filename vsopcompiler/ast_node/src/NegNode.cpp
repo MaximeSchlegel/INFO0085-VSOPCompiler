@@ -1,9 +1,4 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
+#include "../headers/NegNode.h"
 
 
 NegNode::NegNode(Node *expr)
@@ -45,7 +40,7 @@ void NegNode::check(ASTProcessor *ast_processor) {
 llvm::Value *NegNode::codeGen(ASTProcessor *ast_processor)
 {
     debugger->printCall("NegNode::codeGen");
-    
+
     llvm::Value *value = this->expression->codeGen(ast_processor);
 
     if (!value)

@@ -1,13 +1,8 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/StrLiteralNode.h"
 
 StrLiteralNode::StrLiteralNode(std::string *value)
-        : Node(){
+    : Node()
+{
     debugger->printCall("StrLiteralNode::StrLiteralNode");
 
     this->value = value;
@@ -15,7 +10,8 @@ StrLiteralNode::StrLiteralNode(std::string *value)
     debugger->printEnd();
 }
 
-StrLiteralNode::~StrLiteralNode() {
+StrLiteralNode::~StrLiteralNode()
+{
     debugger->printCall("StrLiteralNode::~StrLiteralNode");
 
     delete (this->value);
@@ -23,31 +19,38 @@ StrLiteralNode::~StrLiteralNode() {
     debugger->printEnd();
 }
 
-bool StrLiteralNode::doesSubTreeContains(std::string *id) {
+bool StrLiteralNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("StrLiteralNode::doesSubTreeContains: id=" + *id);
 
     debugger->printEnd();
     return false;
 }
 
-void StrLiteralNode::print(std::ostream &os) const {
+void StrLiteralNode::print(std::ostream &os) const
+{
     debugger->printCall("StrLiteralNode::print");
 
     os << *this->value;
-    if(this->getReturnType()) {
+    if (this->getReturnType())
+    {
         os << " : string";
     }
 
     debugger->printEnd();
 }
 
-void StrLiteralNode::check(ASTProcessor *ast_processor) {
+void StrLiteralNode::check(ASTProcessor *ast_processor)
+{
     debugger->printCall("StrLiteralNode::check");
 
     this->setReturnType(new std::string("string"));
 
     debugger->printEnd();
 }
+
+llvm::Value *StrLiteralNode::codeGen(ASTProcessor *ast_processor)
+{
 
 llvm::Value * StrLiteralNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("StrLitteralNode::codeGen");

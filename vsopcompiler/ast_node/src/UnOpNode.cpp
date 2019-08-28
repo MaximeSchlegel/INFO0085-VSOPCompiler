@@ -1,13 +1,8 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/UnOpNode.h"
 
 UnOpNode::UnOpNode(Node *expr)
-        : Node() {
+    : Node()
+{
     debugger->printCall("UnOpNode::UnOpNode");
 
     this->expression = expr;
@@ -15,7 +10,8 @@ UnOpNode::UnOpNode(Node *expr)
     debugger->printEnd();
 }
 
-UnOpNode::~UnOpNode() {
+UnOpNode::~UnOpNode()
+{
     debugger->printCall("UnOpNode::~UnOpNode");
 
     delete (this->expression);
@@ -23,14 +19,16 @@ UnOpNode::~UnOpNode() {
     debugger->printEnd();
 }
 
-bool UnOpNode::doesSubTreeContains(std::string *id) {
+bool UnOpNode::doesSubTreeContains(std::string *id)
+{
     debugger->printCall("UnOpNode::doesSubTreeContains");
 
     debugger->printEnd();
     return this->expression->doesSubTreeContains(id);
 }
 
-void UnOpNode::print(std::ostream &os) const {
+void UnOpNode::print(std::ostream &os) const
+{
     debugger->printCall("UnOpNode::print");
 
     this->printUnOp(os, "unkown");
@@ -38,19 +36,29 @@ void UnOpNode::print(std::ostream &os) const {
     debugger->printEnd();
 }
 
-void UnOpNode::printUnOp(std::ostream &os, std::string str) const {
-    os << "UnOp("; this->indent += 5;
+void UnOpNode::printUnOp(std::ostream &os, std::string str) const
+{
+    os << "UnOp(";
+    this->indent += 5;
     os << str << "," << std::endl;
 
-    for (int i = 0; i < this->indent; ++i) { os << " "; }
-    os << *this->expression << ")"; this->indent -= 5;
+    for (int i = 0; i < this->indent; ++i)
+    {
+        os << " ";
+    }
+    os << *this->expression << ")";
+    this->indent -= 5;
 
-    if (this->getReturnType()) {
+    if (this->getReturnType())
+    {
         os << " : " << *this->getReturnType();
     }
 
     debugger->printEnd();
 }
+
+void UnOpNode::check(ASTProcessor *ast_processor)
+{
 
 void UnOpNode::check(ASTProcessor *ast_processor) {
     debugger->printCall("UnOpNode::check");

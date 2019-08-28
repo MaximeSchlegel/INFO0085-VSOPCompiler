@@ -1,23 +1,20 @@
-#include "../ASTNode.h"
-
-#include "../../compiler/src/ASTProcessor.h"
-#include "../../debugger/Debugger.h"
-#include "../../exception/Exception.h"
-#include "../../symbol_table/SymbolTable.h"
-
+#include "../headers/PowNode.h"
 
 PowNode::PowNode(Node *left, Node *right)
-        : BinOpNode(left, right) {
+    : BinOpNode(left, right)
+{
     debugger->print("PowNode::PowNode");
     debugger->printEnd();
 }
 
-PowNode::~PowNode() {
+PowNode::~PowNode()
+{
     debugger->print("PowNode::~PowNode");
     debugger->printEnd();
 }
 
-void PowNode::print(std::ostream &os) const {
+void PowNode::print(std::ostream &os) const
+{
     debugger->print("PowNode::print");
 
     this->printBinOp(os, "^");
@@ -25,7 +22,8 @@ void PowNode::print(std::ostream &os) const {
     debugger->printEnd();
 }
 
-void PowNode::check(ASTProcessor *ast_processor) {
+void PowNode::check(ASTProcessor *ast_processor)
+{
     debugger->print("PowNode::check");
 
     this->checkBinOp(ast_processor, "int32", "int32");
@@ -36,7 +34,9 @@ void PowNode::check(ASTProcessor *ast_processor) {
 llvm::Value *PowNode::codeGen(ASTProcessor *ast_processor)
 {
     debugger->printCall("PowNode::codeGen");
-    
+
+    llvm::Value *leftValue = this->left->codeGen(ast_processor);
+
     llvm::Value *leftValue = this->left->codeGen(ast_processor);
     llvm::Value *rightValue = this->right->codeGen(ast_processor);
 
@@ -46,5 +46,5 @@ llvm::Value *PowNode::codeGen(ASTProcessor *ast_processor)
     }
 
     debugger->printEnd();
-    return ast_processor->llvmBuilder->CreateFAdd(leftValue, rightValue, "powtmp"); // TODO Find the proper function
+    return ast_processor->llvmBuilder->CreateFMul(leftValue, rightValue, "powtmp"); // TODO Find the proper function
 }
