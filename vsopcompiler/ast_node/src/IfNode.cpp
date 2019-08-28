@@ -1,4 +1,5 @@
 #include "../headers/IfNode.h"
+#include "../headers/UnitNode.h"
 
 IfNode::IfNode(Node *condition, Node *iftrue)
     : Node()
