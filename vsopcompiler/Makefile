@@ -1,6 +1,7 @@
 CC := g++
 CPP_FLAG := -W -Wall -g
 LLVM_FLAGS := $(shell llvm-config --cppflags --ldflags --libs core)
+LLVM_FLAGS := $(subst -I,-isystem,$(LLVM_FLAGS))
 
 EXEC := vsopc
 

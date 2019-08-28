@@ -86,9 +86,6 @@ void ObjectNode::check(ASTProcessor *ast_processor)
     debugger->printEnd();
 }
 
-llvm::Value *ObjectNode::codeGen(ASTProcessor *ast_processor)
-{
-
 llvm::Value *ObjectNode::codeGen(ASTProcessor *ast_processor) {
     debugger->printCall("ObjectNode::codeGen");
 
