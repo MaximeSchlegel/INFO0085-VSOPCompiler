@@ -48,7 +48,7 @@ public:
 
     virtual void preprocess(ASTProcessor *ast_processor);
     virtual void check(ASTProcessor *ast_processor);
-    virtual llvm::Value *codeGen(ASTProcessor *ast_processor);
+    virtual llvm::Value *codeGen(ASTProcessor *ast_processor) = 0;
 };
 
 #endif

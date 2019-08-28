@@ -1,4 +1,5 @@
 #include "../headers/MethodNode.h"
+#include "../headers/FormalNode.h"
 
 
 MethodNode::MethodNode(std::string *name, std::string *type, std::vector<Node *> *formals, Node *block)

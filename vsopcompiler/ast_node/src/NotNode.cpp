@@ -33,8 +33,6 @@ void NotNode::check(ASTProcessor *ast_processor)
     if (*this->expression->getReturnType() != "bool")
     {
         throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                        if (*this->expression->getReturnType() != "bool") {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
                 "Bool Type expected -- " + *this->expression->getReturnType());
     }
 
