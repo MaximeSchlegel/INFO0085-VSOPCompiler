@@ -34,6 +34,13 @@ install-tools:
 	mkdir -p $(BUILD_DIR)/exception
 	mkdir -p $(BUILD_DIR)/debugger
 
+	[ -e /lib/x86_64-linux-gnu/libz.so ] \
+		|| sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 \
+						/lib/x86_64-linux-gnu/libz.so
+	[ -e /usr/lib/x86_64-linux-gnu/libstdc++.so ] \
+		|| sudo ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
+						/usr/lib/x86_64-linux-gnu/libstdc++.so
+
 $(BUILD_DIR)/exception/%.o: $(EXCEPT_DIR)/src/%.cpp
 	$(CC) $(CPP_FLAG) -c -o $@ $< $(LLVM_FLAGS)
 
