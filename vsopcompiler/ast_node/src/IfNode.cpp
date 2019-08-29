@@ -192,7 +192,7 @@ llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
     ast_processor->llvmBuilder->SetInsertPoint(elseBranchBlock);
 
     if(!this->iffalse) {
-        thsi->iffalse = new UnitNode();
+        this->iffalse = new UnitNode();
     }
 
     llvm::Value *elseValue = this->iffalse->codeGen(ast_processor);
