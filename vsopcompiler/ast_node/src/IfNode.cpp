@@ -8,7 +8,7 @@ IfNode::IfNode(Node *condition, Node *iftrue)
 
     this->condition = condition;
     this->iftrue = iftrue;
-    this->iffalse = new UnitNode();
+    this->iffalse = nullptr;
 
     debugger->printEnd();
 }
@@ -190,6 +190,10 @@ llvm::Value *IfNode::codeGen(ASTProcessor *ast_processor)
     /// Emit else block
     function->getBasicBlockList().push_back(elseBranchBlock);
     ast_processor->llvmBuilder->SetInsertPoint(elseBranchBlock);
+
+    if(!this->iffalse) {
+        thsi->iffalse = new UnitNode();
+    }
 
     llvm::Value *elseValue = this->iffalse->codeGen(ast_processor);
     if (!elseValue)
