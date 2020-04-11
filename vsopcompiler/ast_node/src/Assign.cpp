@@ -21,7 +21,7 @@ AssignNode::~AssignNode() {
 }
 
 bool AssignNode::doesSubTreeContains(std::string *id) {
-    debugger->printCall("AssignNode::doesSubTreeContains");
+    debugger->printCall("AssignNode::doesSubTreeContains : id=" + *id);
 
     if (*this->objectName == *id) {
         debugger->printEnd();
@@ -57,33 +57,51 @@ void AssignNode::print(std::ostream &os) const {
 void AssignNode::check(ASTProcessor *ast_processor) {
     debugger->printCall("AssignNode::check");
 
-    /// Check overshadowed of self
-    if (*this->objectName == "self") {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Self can not be overshadowed");
-    }
+    ExceptionsHolder *errors = new ExceptionsHolder();
 
-    VariableEntry *object = ast_processor->symbolTable->lookupVariable(this->objectName);
+    /// Check if self is overshadowed
+    if (*this->objectName == "self") {
+        errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                         "Self can not be overshadowed"));
+    } else {
+        debugger->printStep("Check : Self overshadowed PASS")
+    }
 
     /// Check if the object has been declared
+    VariableEntry *object = ast_processor->symbolTable->lookupVariable(this->objectName);
     if (!object) {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Use of unbound variable -- " + *this->objectName);
+        errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                          "Use of unbound variable -- " + *this->objectName));
+    } else {
+        debugger->printStep("Check : Object declared PASS")
     }
 
-    /// Check the expression
+    /// Check the subtree
     ast_processor->symbolTable->enterNewScope();
-    this->expression->check(ast_processor);
+    try {
+        this->expression->check(ast_processor);
+        debugger->printStep("Check : Subtree PASS");
+    } catch (const ExceptionsHolder &e) {
+        errors->add(e);
+    }
     ast_processor->symbolTable->exitToParent();
+
+    /// Stop here if error because type compatibility tests do not make sense
+    if (!errors->isEmpty()) {
+        debugger->printEnd();
+        throw errors;
+    }
 
     /// Check if the types match
     if (!ast_processor->isChildOf(this->expression->getReturnType(), object->getType())) {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Types do not match -- " + *object->getType() + " - " + *this->expression->getReturnType());
+        throw ExceptionsHolder(
+                ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                      "Types do not match -- " + *object->getType() + " - " + *this->expression->getReturnType()));
+    } else {
+        debugger->printStep("Check : Matching type PASS");
     }
 
     this->setReturnType(this->expression->getReturnType());
-
     debugger->printEnd();
 }
 

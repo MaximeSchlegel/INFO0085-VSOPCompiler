@@ -21,7 +21,7 @@
   	Node *astNode;
   	std::vector<Node *> *nodeVector;
   	std::pair<std::vector<Node *> *, std::vector<Node *> *> *nodeVectorPair;
-	LexerException *lerror;
+	ExceptionHolder *lerror;
 }
 
 //Terminal

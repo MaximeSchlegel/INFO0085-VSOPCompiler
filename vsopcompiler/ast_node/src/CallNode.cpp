@@ -79,6 +79,7 @@ void CallNode::print(std::ostream &os) const {
     } else {
         os << " []";
     }
+
     os << ")"; this->indent -= 5;
 
     if (this->getReturnType()) {
@@ -91,51 +92,79 @@ void CallNode::print(std::ostream &os) const {
 void CallNode::check(ASTProcessor *ast_processor) {
     debugger->printCall("CallNode::check");
 
-    /// Check the caller
-    this->caller->check(ast_processor);
-    debugger->printStep("Caller check pass");
+    ExceptionsHolder *errors = new ExceptionsHolder();
 
-    /// Check that the method exist
-    ast_processor->symbolTable->enterSavedScope(this->caller->getReturnType());
-    MethodEntry *method = ast_processor->symbolTable->lookupMethod(this->methodName);
-    ast_processor->symbolTable->exitToPrevious();
-    if(!method) {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Method is not define -- " + *this->caller->getReturnType() + "::" + *this->methodName);
+    /// Check the caller and method
+    try {
+        this->caller->check(ast_processor); /// can throw an errors -> if the case try stop here
+        debugger->printStep("Check : Caller PASS");
+
+        /// Check if the method exist for the caller
+        ast_processor->symbolTable->enterSavedScope(this->caller->getReturnType());
+        MethodEntry *method = ast_processor->symbolTable->lookupMethod(this->methodName);
+        ast_processor->symbolTable->exitToPrevious();
+        if (method) {
+            debugger->printStep("Check : Method existence PASS");
+
+            /// Check that the args number match the formals number
+            if (this->arguments && (this->arguments->size() != method->formalsNumber()) {
+                errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                                  "Invalid number of argument -- " + std::to_string(this->arguments->size()) + " / " + std::to_string(method->formalsNumber())));
+            } else if (!this->arguments && (method->formalsNumber() != 0)) {
+                errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                            "Invalid number of argument -- " + std::to_string(0) + " / " + std::to_string(method->formalsNumber())));
+            } else {
+                debugger->printStep("Check : Arguments number PASS");
+            }
+        } else {
+            errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                                              "Method is not define -- " + *this->caller->getReturnType() + "::" + *this->methodName));
+        }
+    } catch (const ExceptionsHolder &e) {
+        errors->add(e);
     }
-    debugger->printStep("Method exist check pass");
+
+
+    /// Check the subtree
+    bool pass = true;
+    for (long unsigned int i = 0; i < this->arguments->size(); ++i) {
+        ast_processor->symbolTable->enterNewScope();
+        try {
+            this->arguments->at(i)->check(ast_processor);
+        } catch (const ExceptionsHolder &e) {
+            errors->add(e);
+            pass = false;
+        }
+        ast_processor->symbolTable->exitToParent();
+    }
+
+    if (pass) {
+        debugger->printStep("Check : Subtree PASS");
+    }
+
+    /// Stop here if error because type compatibility tests do not make sense
+    if (!errors->isEmpty()) {
+        debugger->printEnd();
+        throw errors;
+    }
 
     /// Check that the args are define according to the formals
-    if (this->arguments) {
-        debugger->printStep("Call has arguments");
-
-        if (this->arguments->size() != method->formalsNumber()) {
-            throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                    "Invalid number of argument -- " + std::to_string(this->arguments->size()) + " / " + std::to_string(method->formalsNumber()));
+    pass = true;
+    for (long unsigned int i = 0; i < this->arguments->size(); ++i) {
+        if (!ast_processor->isChildOf(this->arguments->at(i)->getReturnType(), method->getFormal(i)->getType())) {
+            errors->add(ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
+                    "Types do not match -- " + *this->arguments->at(i)->getReturnType() + " - " + *method->getFormal(i)->getType()));
+            pass = false;
         }
-        debugger->printStep("Number of arguments check pass");
-
-        for (long unsigned int i = 0; i < this->arguments->size(); ++i) {
-            /// Check the args
-            ast_processor->symbolTable->enterNewScope();
-            this->arguments->at(i)->check(ast_processor);
-            ast_processor->symbolTable->exitToParent();
-
-            /// Check that the type match
-            if (!ast_processor->isChildOf(this->arguments->at(i)->getReturnType(), method->getFormal(i)->getType())) {
-                throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                        "Types do not match -- " + *this->arguments->at(i)->getReturnType() + " - " + *method->getFormal(i)->getType());
-            }
-        }
-        debugger->printStep("Arguments matching check pass");
-
-    } else if (method->formalsNumber() != 0) {
-        throw ASTProcessorException(*this->getFilename(), this->getLine(), this->getColumn(),
-                "Invalid number of argument -- " + std::to_string(0) + " / " + std::to_string(method->formalsNumber()));
+    }
+    if (pass) {
+        debugger->printStep("Check : Matching type of args PASS");
+    }
+    if (!errors->isEmpty()) {
+        throw errors;
     }
 
     this->setReturnType(method->getType());
-
     debugger->printEnd();
 }
 

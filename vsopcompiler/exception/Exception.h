@@ -6,6 +6,7 @@
 #include <ostream>
 #include <string>
 
+
 class ProjectException
         : public std::exception {
 private:
@@ -94,5 +95,28 @@ public:
 
     void print(std::ostream &os) const override;
 };
+
+
+class ExceptionsHolder
+        : public std::exception {
+private:
+    std::vector<ProjectException *> *errors;
+
+public:
+    ExceptionsHolder ();
+    ExceptionsHolder (ProjectException error);
+    ExceptionsHolder (ProjectException *error);
+    virtual ~ExceptionsHolder();
+
+    virtual const char *what() const throw();
+    std::vector<std::exception> *getErrors();
+    bool isEmpty();
+
+    void add(ProjectException error);
+    void add(ExceptionsHolder error);
+
+    friend std::ostream &operator<<(std::ostream &os, const ProjectException &exception);
+};
+
 
 #endif //INFO0085_VSOPCOMPILER_2_EXCEPTION_H

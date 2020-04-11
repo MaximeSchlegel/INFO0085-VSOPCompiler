@@ -41,7 +41,7 @@ std::string *ClassNode::getExtends() const {
 }
 
 bool ClassNode::doesSubTreeContains(std::string *id) {
-    debugger->printCall("ClassNode::doesSubTreeContains");
+    debugger->printCall("ClassNode::doesSubTreeContains : id=" + *id);
 
     if (*this->name == *id) {
         debugger->printEnd();
@@ -151,7 +151,7 @@ void ClassNode::preprocess(ASTProcessor *ast_processor) {
                         "Cyclic definition -- " + *this->extends);
             }
 
-            /// Try to register the parent node
+            /// Try to register the parent node (if not already register)
             ast_processor->strToNode(this->extends)->preprocess(ast_processor);
         }
     }

@@ -81,8 +81,8 @@ objectId    {lowercase-letter}({letter}|{digit}|_)*
 <MULTILINECOMMENT>\*              {  }
 <MULTILINECOMMENT><<EOF>>         { yylloc.first_line = openedCommentsPosition.top().first;
                                     yylloc.first_column = openedCommentsPosition.top().second;
-                                    yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                                "unexpected end-of-file in comment");
+                                    yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                                "unexpected end-of-file in comment"));
                                     return ERROR;
                                   }
 
@@ -118,22 +118,22 @@ objectId    {lowercase-letter}({letter}|{digit}|_)*
                                    strBuffer += intLit;
                                  }
                                }
-<STR>\x5C                      { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                            "invalid escaped sequence");
+<STR>\x5C                      { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                            "invalid escaped sequence"));
                                  return ERROR;
                                }
-<STR>\x00                      { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                            "null char in string");
+<STR>\x00                      { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                            "null char in string"));
                                  return ERROR;
                                }
-<STR>\x0A                      { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                            "feed line in string");
+<STR>\x0A                      { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                            "feed line in string"));
                                  return ERROR;
                                }
 <STR><<EOF>>                   { yylloc.first_line = strStartPosition.first;
                                  yylloc.first_column = strStartPosition.second;
-                                 yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                            "unexpected end-of-file in string");
+                                 yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                            "unexpected end-of-file in string"));
                                  return ERROR;
                                }
 <STR>.                         { strBuffer += yytext; }
@@ -155,16 +155,16 @@ objectId    {lowercase-letter}({letter}|{digit}|_)*
                                             return INTLITERAL;
                                           }
 
-{integer-literal}({objectId}|{typeId})    { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                                    "missing whitespace between integer and identifier");
+{integer-literal}({objectId}|{typeId})    { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                                        "missing whitespace between integer and identifier"));
                                             return ERROR;
                                           }
-"0b"{ignored-char}                        { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                                        "incomplete binary integer literal");
+"0b"{ignored-char}                        { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                                        "incomplete binary integer literal"));
                                             return ERROR;
                                           }
-"0x"{ignored-char}                        { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                                        "incomplete hexadecimal integer literal");
+"0x"{ignored-char}                        { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                                                        "incomplete hexadecimal integer literal"));
                                             return ERROR;
                                           }
 
@@ -206,8 +206,8 @@ objectId    {lowercase-letter}({letter}|{digit}|_)*
 
 {ignored-char}+    {  }
 <<EOF>>            { return END; }
-.                  { yylval.lerror = new LexerException(filename, yylloc.first_line, yylloc.first_column,
-                                                "invalid character");
+.                  { yylval.lerror = new ExceptionHolder(LexerException(filename, yylloc.first_line, yylloc.first_column,
+                                                "invalid character"));
                      return ERROR;
                    }
 
